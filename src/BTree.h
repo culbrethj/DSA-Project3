@@ -8,9 +8,7 @@ using namespace std;
 const int MAX_KEYS = 5;
 
 struct Node{
-    vector<int> record_ids;
-    vector<Packet> packets;
-    Packet data;
+    vector<pair<int, Packet>> id_and_key;
 
     vector<Node*> children;
     Node* parent;
@@ -33,7 +31,7 @@ public:
 private:
     void insertHelper(Node* node, int record_id, Packet packet);
 
-    void splitNode(Node* parent, Node* node, int index);
+    void splitNode(Node* parent, Node* node, Packet packet);
 
     Node* searchHelper(Node* node, int record_id);
     void inorderTraversal(Node* node);
@@ -50,15 +48,13 @@ Node::Node(){
 void BTree::insert(int record_id, Packet packet){
     if (root == nullptr){
         root = new Node();
-        root->record_ids.push_back(record_id);
-        root->packets.push_back(packet);
-        root->data = packet;
+        root->id_and_key.push_back(make_pair(record_id, packet));
     }
     else{
-        if (root->record_ids.size() >= MAX_KEYS){
+        if (root->id_and_key.size() >= MAX_KEYS){
             Node* new_root = new Node();
             new_root->children.push_back(root);
-            splitNode(new_root, root, 0);
+            splitNode(new_root, root, packet);
             root = new_root;
         }
         insertHelper(root, record_id, packet);
@@ -86,18 +82,19 @@ BTree::BTree() {
 
 void BTree::insertHelper(Node *node, int record_id, Packet packet){
     if (node->isLeaf()){
-        node->record_ids.push_back(record_id);
-        node->packets.push_back(packet);
-        sort(node->record_ids.begin(), node->record_ids.end());
+        node->id_and_key.push_back(make_pair(record_id, packet));
+        sort(node->id_and_key.begin(), node->id_and_key.end(), [](const auto& a, const auto& b) {
+            return a.first < b.first;
+        });
     }
     else{
-        int i = 0;
-        while (i < node->record_ids.size() && record_id > node->record_ids.at(i)){
+        size_t i = 0;
+        while (i < node->id_and_key.size() && record_id > node->id_and_key.at(i).first){
             i++;
         }
-        if (i < node->children.size() && node->children.at(i)->record_ids.size() >= MAX_KEYS){
-            splitNode(node, node->children.at(i), i);
-            if (record_id > node->record_ids.at(i)){
+        if (i < node->children.size() && node->children.at(i)->id_and_key.size() >= MAX_KEYS){
+            splitNode(node, node->children.at(i), packet);
+            if (record_id > node->id_and_key.at(i).first){
                 i++;
             }
         }
@@ -105,28 +102,34 @@ void BTree::insertHelper(Node *node, int record_id, Packet packet){
     }
 }
 
-void BTree::splitNode(Node *parent, Node *node, int index){
+void BTree::splitNode(Node *parent, Node *node, Packet packet){
     Node* new_node = new Node();
     int mid = MAX_KEYS / 2;
-    int median = node->record_ids[mid];
+    int median = node->id_and_key[mid].first;
 
-    new_node->record_ids.assign(node->record_ids.begin() + mid + 1, node->record_ids.end());
-    node->record_ids.erase(node->record_ids.begin() + mid, node->record_ids.end());
+    new_node->id_and_key.assign(node->id_and_key.begin() + mid + 1, node->id_and_key.end());
+    node->id_and_key.erase(node->id_and_key.begin() + mid, node->id_and_key.end());
 
     if (!node->isLeaf()){
         new_node->children.assign(node->children.begin() + mid + 1, node->children.end());
         node->children.erase(node->children.begin() + mid + 1, node->children.end());
     }
 
-    if (parent != nullptr){
-        auto it = std::upper_bound(parent->record_ids.begin(), parent->record_ids.end(), median);
-        int pos = it - parent->record_ids.begin();
+    if (parent != nullptr) {
+        vector<int> ids;
+        for (size_t i = 0; i < parent->id_and_key.size(); i++) {
+            ids.push_back(parent->id_and_key.at(i).first);
+        }
 
-        parent->record_ids.insert(parent->record_ids.begin() + pos, median);
+        auto it = std::upper_bound(ids.begin(), ids.end(), median);
+        int pos = it - ids.begin();
+
+        parent->id_and_key.insert(parent->id_and_key.begin() + pos, std::make_pair(median, packet));
         parent->children.insert(parent->children.begin() + pos + 1, new_node);
 
         new_node->parent = parent;
     }
+
     node->parent = parent;
 }
 
@@ -136,12 +139,12 @@ Node *BTree::searchHelper(Node *node, int record_id){
         return nullptr;
     }
 
-    int i = 0;
-    while(i < node->record_ids.size() && record_id > node->record_ids.at(i)){
+    size_t i = 0;
+    while(i < node->id_and_key.size() && record_id > node->id_and_key.at(i).first){
         i++;
     }
 
-    if(i < node->record_ids.size() && record_id == node->record_ids.at(i)){
+    if(i < node->id_and_key.size() && record_id == node->id_and_key.at(i).first){
         return node;
     }
     else if(node->isLeaf()){
@@ -155,17 +158,17 @@ Node *BTree::searchHelper(Node *node, int record_id){
 void BTree::inorderTraversal(Node *node){
     if (node != nullptr){
         if (!node->isLeaf()){
-            for (int i = 0; i < node->children.size(); i++){
+            for (size_t i = 0; i < node->children.size(); i++){
                 inorderTraversal(node->children.at(i));
 
-                if (i < node->record_ids.size()){
-                    cout << node->record_ids.at(i) << " ";
+                if (i < node->id_and_key.size()) {
+                    cout << "ID: " << node->id_and_key.at(i).first << " Age: " << node->id_and_key.at(i).second.slave_age << " " << endl;
                 }
             }
         }
         else{
-            for (int i = 0; i < node->record_ids.size(); i++){
-                cout << node->record_ids.at(i) << " ";
+            for (size_t i = 0; i < node->id_and_key.size(); i++){
+                cout << "ID: " << node->id_and_key.at(i).first << " Age: " << node->id_and_key.at(i).second.slave_age << " " << endl;
             }
         }
     }
