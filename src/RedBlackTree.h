@@ -200,7 +200,7 @@ RBNode* RedBlackTree::searchRecord(int record_id) {
 void RedBlackTree::inorderTraversal(RBNode* node) {
     if (node != NIL) {
         inorderTraversal(node->left);
-        cout << "ID: " << node->record_id << " State: " << node->data.buyer_state  << endl;
+        cout << "ID: " << node->record_id << ", State: " << node->data.buyer_state  << endl;
         inorderTraversal(node->right);
     }
 }
