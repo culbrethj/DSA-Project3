@@ -9,6 +9,7 @@ const int MAX_KEYS = 5;
 
 struct Node{
     vector<int> record_ids;
+    vector<Packet> packets;
     Packet data;
 
     vector<Node*> children;
@@ -50,6 +51,7 @@ void BTree::insert(int record_id, Packet packet){
     if (root == nullptr){
         root = new Node();
         root->record_ids.push_back(record_id);
+        root->packets.push_back(packet);
         root->data = packet;
     }
     else{
@@ -85,6 +87,7 @@ BTree::BTree() {
 void BTree::insertHelper(Node *node, int record_id, Packet packet){
     if (node->isLeaf()){
         node->record_ids.push_back(record_id);
+        node->packets.push_back(packet);
         sort(node->record_ids.begin(), node->record_ids.end());
     }
     else{
