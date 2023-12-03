@@ -28,9 +28,8 @@ int main(){
 	bt.insert(6501, p8);
 	bt.insert(10, p9);
 
+    bt.search(10);
 	bt.inorder();
-
-
 
 /*
 	fstream data_in;
