@@ -175,24 +175,3 @@ void BTree::inorderTraversal(Node *node){
         }
     }
 }
-
-//int main(){
-//    BTree btree;
-//
-//    btree.insert(1, "Country1", "Buyer1", "Origin1", "State1", "SellerCountry1", "Seller1", "SellerOrigin1", "SellerState1", 20, "Male", "Slave1", "Black", "2023-01-01", "5", 10, "Credit", 80, 1000);
-//    btree.insert(2, "Country2", "Buyer2", "Origin2", "State2", "SellerCountry2", "Seller2", "SellerOrigin2", "SellerState2", 25, "Female", "Slave2", "White", "2023-01-02", "8", 5, "Cash", 90, 1200);
-//    btree.insert(5000, "Country3", "Buyer3", "Origin3", "State3", "SellerCountry3", "Seller3", "SellerOrigin3", "SellerState3", 22, "Male", "Slave3", "Brown", "2023-01-03", "10", 15, "Credit", 85, 800);
-//    btree.insert(9600, "Country1", "Buyer1", "Origin1", "State1", "SellerCountry1", "Seller1", "SellerOrigin1", "SellerState1", 20, "Male", "Slave1", "Black", "2023-01-01", "5", 10, "Credit", 80, 1000);
-//    btree.insert(2000, "Country2", "Buyer2", "Origin2", "State2", "SellerCountry2", "Seller2", "SellerOrigin2", "SellerState2", 25, "Female", "Slave2", "White", "2023-01-02", "8", 5, "Cash", 90, 1200);
-//    btree.insert(1221, "Country3", "Buyer3", "Origin3", "State3", "SellerCountry3", "Seller3", "SellerOrigin3", "SellerState3", 22, "Male", "Slave3", "Brown", "2023-01-03", "10", 15, "Credit", 85, 800);
-//    btree.insert(8411, "Country1", "Buyer1", "Origin1", "State1", "SellerCountry1", "Seller1", "SellerOrigin1", "SellerState1", 20, "Male", "Slave1", "Black", "2023-01-01", "5", 10, "Credit", 80, 1000);
-//    btree.insert(6501, "Country2", "Buyer2", "Origin2", "State2", "SellerCountry2", "Seller2", "SellerOrigin2", "SellerState2", 25, "Female", "Slave2", "White", "2023-01-02", "8", 5, "Cash", 90, 1200);
-//    btree.insert(10, "Country3", "Buyer3", "Origin3", "State3", "SellerCountry3", "Seller3", "SellerOrigin3", "SellerState3", 22, "Male", "Slave3", "Brown", "2023-01-03", "10", 15, "Credit", 85, 800);
-//
-//    btree.inorder();
-//
-//    int search_id = 10;
-//    btree.search(search_id);
-//
-//    return 0;
-//}

@@ -27,12 +27,6 @@ int main(){
 	 bt.insert(8411, p7);
 	 bt.insert(6501, p8);
 	 bt.insert(10, p9);
-	 bt.insert(9000, p4);
-	 bt.insert(3000, p5);
-	 bt.insert(7000, p6);
-	 bt.insert(8000, p7);
-	 bt.insert(6000, p8);
-	 bt.insert(4000, p9);
 
      bt.search(10);
 	 bt.inorder();
@@ -47,6 +41,7 @@ int main(){
 	 rbt.insert(8411, p7);
 	 rbt.insert(6501, p8);
 	 rbt.insert(10, p9);
+
 	 rbt.inorderTraversal(rbt.getRoot());
 
 //	ifstream data_in("input/slavery_ids.csv");
