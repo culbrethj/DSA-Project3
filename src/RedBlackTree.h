@@ -212,6 +212,16 @@ RBNode* RedBlackTree::minimum(RBNode* x) {
     return x;
 }
 
+void RedBlackTree::transplant(RBNode* u, RBNode* v) {
+    if (u->parent == NIL) {
+        root = v;
+    } else if (u == u->parent->left) {
+        u->parent->left = v;
+    } else {
+        u->parent->right = v;
+    }
+    v->parent = u->parent;
+}
 
 
 // int main() {
