@@ -162,13 +162,15 @@ void BTree::inorderTraversal(Node *node){
                 inorderTraversal(node->children.at(i));
 
                 if (i < node->id_and_key.size()) {
-                    cout << "ID: " << node->id_and_key.at(i).first << " Age: " << node->id_and_key.at(i).second.slave_age << " " << endl;
+                    cout << "ID: " << node->id_and_key.at(i).first << " State: " << node->id_and_key.at(i).second.buyer_state << " "
+                         << node->id_and_key.at(i).second.seller_county << " " << endl;
                 }
             }
         }
         else{
             for (size_t i = 0; i < node->id_and_key.size(); i++){
-                cout << "ID: " << node->id_and_key.at(i).first << " Age: " << node->id_and_key.at(i).second.slave_age << " " << endl;
+                cout << "ID: " << node->id_and_key.at(i).first << " State: " << node->id_and_key.at(i).second.buyer_state << " "
+                     << node->id_and_key.at(i).second.seller_county << " " << endl;
             }
         }
     }
