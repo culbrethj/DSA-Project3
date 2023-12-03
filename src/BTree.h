@@ -82,9 +82,7 @@ BTree::BTree() {
     root = nullptr;
 }
 
-void BTree::insertHelper(Node *node, int record_id, string BuyerCountryofOrigin, string BuyerFullName, string BuyerOrigin,
-                    string BuyerStateOfOrigin, string SellerCountyofOrigin, string SellerFullName, string SellerOrigin, string SellerStateOfOrigin, int SlaveAge, string SlaveGender, string SlaveName, string SlaveColor,
-                    string TransactionDate, string TotalSlavesPurchased, double TransactionSaleDiscount, string TransactionPaymentMethod, double TransactionPredictedInterest, int TransactionTotal){
+void BTree::insertHelper(Node *node, int record_id, Packet packet){
     if (node->isLeaf()){
         node->record_ids.push_back(record_id);
         sort(node->record_ids.begin(), node->record_ids.end());
@@ -100,9 +98,7 @@ void BTree::insertHelper(Node *node, int record_id, string BuyerCountryofOrigin,
                 i++;
             }
         }
-        insertHelper(node->children.at(i), record_id, BuyerCountryofOrigin, BuyerFullName, BuyerOrigin,
-                     BuyerStateOfOrigin, SellerCountyofOrigin, SellerFullName, SellerOrigin, SellerStateOfOrigin, SlaveAge, SlaveGender, SlaveName, SlaveColor,
-                     TransactionDate, TotalSlavesPurchased, TransactionSaleDiscount,  TransactionPaymentMethod, TransactionPredictedInterest, TransactionTotal);
+        insertHelper(node->children.at(i), record_id, packet);
     }
 }
 
