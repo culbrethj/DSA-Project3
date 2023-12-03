@@ -27,10 +27,19 @@ int main(){
 	bt.insert(8411, p7);
 	bt.insert(6501, p8);
 	bt.insert(10, p9);
-
 	bt.inorder();
 
-
+	RedBlackTree rbt;
+	rbt.insert(1, p1);
+	rbt.insert(2, p2);
+	rbt.insert(5000, p3);
+	rbt.insert(9600, p4);
+	rbt.insert(2000, p5);
+	rbt.insert(1221, p6);
+	rbt.insert(8411, p7);
+	rbt.insert(6501, p8);
+	rbt.insert(10, p9);
+	rbt.inorderTraversal(rbt.getRoot());
 
 /*
 	fstream data_in;

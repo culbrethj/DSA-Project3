@@ -43,7 +43,7 @@ public:
     RedBlackTree();
     ~RedBlackTree();
     void destroyTree(RBNode* node);
-        RBNode* getRoot() const {
+    RBNode* getRoot() const {
         return root;
     }
     void insert(int record_id, Packet packet);
@@ -53,7 +53,8 @@ public:
 };
 
 RedBlackTree::RedBlackTree() {
-    NIL = new RBNode(0, "", "", "", "", "", "", "", "", 0, "", "", "", "", "", 0, "", 0, 0);
+    Packet blank;
+    NIL = new RBNode(0, blank);
     NIL->color = BLACK;
     root = NIL;
 }
@@ -202,7 +203,7 @@ RBNode* RedBlackTree::searchRecord(int record_id) {
 void RedBlackTree::inorderTraversal(RBNode* node) {
     if (node != NIL) {
         inorderTraversal(node->left);
-        cout << "Record ID: " << node->record_id << ", Buyer: " << node->BuyerFullName << endl;
+        cout << "Record ID: " << node->record_id << endl;
         inorderTraversal(node->right);
     }
 }
