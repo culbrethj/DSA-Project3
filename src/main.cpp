@@ -18,15 +18,15 @@ Packet p9("County3", "Buyer3", "State3", "SellerCounty3", "Seller3", "SellerStat
 int main(){
 
 	 BTree bt;
-	 bt.insert(1000, p1);
-	 bt.insert(2000, p2);
-	 bt.insert(5000, p3);
-	 bt.insert(9600, p4);
-	 bt.insert(2000, p5);
-	 bt.insert(1221, p6);
-	 bt.insert(8411, p7);
-	 bt.insert(6501, p8);
-	 bt.insert(10, p9);
+    bt.insert(1, p1);
+    bt.insert(2, p2);
+    bt.insert(5000, p3);
+    bt.insert(9600, p4);
+    bt.insert(2000, p5);
+    bt.insert(1221, p6);
+    bt.insert(8411, p7);
+    bt.insert(6501, p8);
+    bt.insert(10, p9);
 
      bt.search(10);
 	 bt.inorder();
