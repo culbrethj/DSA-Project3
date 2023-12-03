@@ -36,17 +36,16 @@ private:
     void insertFixup(RBNode* z);
     RBNode* minimum(RBNode* x);
 
+    RBNode* searchRecord(int record_id);
+    void inorderTraversal(RBNode* node);
 
 public:
     RedBlackTree();
     ~RedBlackTree();
     void destroyTree(RBNode* node);
-    RBNode* getRoot() const {
-        return root;
-    }
     void insert(int record_id, Packet packet);
-    RBNode* searchRecord(int record_id);
-    void inorderTraversal(RBNode* node);
+    void search(int record_id);
+    void inorder();
 };
 
 RedBlackTree::RedBlackTree() {
@@ -210,4 +209,19 @@ RBNode* RedBlackTree::minimum(RBNode* x) {
         x = x->left;
     }
     return x;
+}
+
+void RedBlackTree::search(int record_id) {
+    RBNode* node = searchRecord(record_id);
+
+    if(node != nullptr){
+        cout << "Record with ID " << record_id << " found!" << endl;
+    }
+    else{
+        cout << "Record with ID " << record_id << " not found." << endl;
+    }
+}
+
+void RedBlackTree::inorder() {
+    inorderTraversal(root);
 }

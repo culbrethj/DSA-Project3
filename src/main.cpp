@@ -42,7 +42,8 @@ int main(){
 	 rbt.insert(6501, p8);
 	 rbt.insert(10, p9);
 
-	 rbt.inorderTraversal(rbt.getRoot());
+     rbt.search(15);
+	 rbt.inorder();
 
 //	ifstream data_in("input/slavery_ids.csv");
 //	string line;
