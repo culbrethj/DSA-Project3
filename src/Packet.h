@@ -59,4 +59,5 @@ struct Packet{
     transaction_payment(transaction_payment),
     transaction_interest_rate(transaction_interest_rate),
     transaction_price(transaction_price) {}
+    Packet() {}
 };
