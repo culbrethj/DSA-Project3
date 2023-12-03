@@ -34,10 +34,8 @@ private:
     void leftRotate(RBNode* x);
     void rightRotate(RBNode* y);
     void insertFixup(RBNode* z);
-    RBNode* search(int record_id);
     RBNode* minimum(RBNode* x);
-    void transplant(RBNode* u, RBNode* v);
-    //void deleteFixup(RBNode* x);
+
 
 public:
     RedBlackTree();
@@ -202,7 +200,7 @@ RBNode* RedBlackTree::searchRecord(int record_id) {
 void RedBlackTree::inorderTraversal(RBNode* node) {
     if (node != NIL) {
         inorderTraversal(node->left);
-        cout << "Record ID: " << node->record_id << endl;
+        cout << "ID: " << node->record_id << " State: " << node->data.buyer_state  << endl;
         inorderTraversal(node->right);
     }
 }
