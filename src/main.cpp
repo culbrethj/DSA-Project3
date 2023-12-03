@@ -54,5 +54,8 @@ int main(){
 	while(getline(data_in, line)){
 		cout << line << endl;
 	}
+
+    BTree bt;
+
 	return 0;
 }
