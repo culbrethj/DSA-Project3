@@ -17,45 +17,42 @@ Packet p9("County3", "Buyer3", "State3", "SellerCounty3", "Seller3", "SellerStat
 
 int main(){
 
-	// BTree bt;
-	// bt.insert(1000, p1);
-	// bt.insert(2000, p2);
-	// bt.insert(5000, p3);
-	// bt.insert(9600, p4);
-	// bt.insert(2000, p5);
-	// bt.insert(1221, p6);
-	// bt.insert(8411, p7);
-	// bt.insert(6501, p8);
-	// bt.insert(10, p9);
-	// bt.insert(9000, p4);
-	// bt.insert(3000, p5);
-	// bt.insert(7000, p6);
-	// bt.insert(8000, p7);
-	// bt.insert(6000, p8);
-	// bt.insert(4000, p9);
+	 BTree bt;
+	 bt.insert(1000, p1);
+	 bt.insert(2000, p2);
+	 bt.insert(5000, p3);
+	 bt.insert(9600, p4);
+	 bt.insert(2000, p5);
+	 bt.insert(1221, p6);
+	 bt.insert(8411, p7);
+	 bt.insert(6501, p8);
+	 bt.insert(10, p9);
+	 bt.insert(9000, p4);
+	 bt.insert(3000, p5);
+	 bt.insert(7000, p6);
+	 bt.insert(8000, p7);
+	 bt.insert(6000, p8);
+	 bt.insert(4000, p9);
 
-    // bt.search(10);
-	// bt.inorder();
+     bt.search(10);
+	 bt.inorder();
 
-	// RedBlackTree rbt;
-	// rbt.insert(1, p1);
-	// rbt.insert(2, p2);
-	// rbt.insert(5000, p3);
-	// rbt.insert(9600, p4);
-	// rbt.insert(2000, p5);
-	// rbt.insert(1221, p6);
-	// rbt.insert(8411, p7);
-	// rbt.insert(6501, p8);
-	// rbt.insert(10, p9);
-	// rbt.inorderTraversal(rbt.getRoot());
+	 RedBlackTree rbt;
+	 rbt.insert(1, p1);
+	 rbt.insert(2, p2);
+	 rbt.insert(5000, p3);
+	 rbt.insert(9600, p4);
+	 rbt.insert(2000, p5);
+	 rbt.insert(1221, p6);
+	 rbt.insert(8411, p7);
+	 rbt.insert(6501, p8);
+	 rbt.insert(10, p9);
+	 rbt.inorderTraversal(rbt.getRoot());
 
-	ifstream data_in("input/slavery_ids.csv");
-	string line;
-	while(getline(data_in, line)){
-		cout << line << endl;
-	}
-
-    BTree bt;
-
-	return 0;
+//	ifstream data_in("input/slavery_ids.csv");
+//	string line;
+//	while(getline(data_in, line)){
+//		cout << line << endl;
+//	}
+//	return 0;
 }

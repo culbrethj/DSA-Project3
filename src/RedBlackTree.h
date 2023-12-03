@@ -37,6 +37,7 @@ private:
     RBNode* search(int record_id);
     RBNode* minimum(RBNode* x);
     void transplant(RBNode* u, RBNode* v);
+    //void deleteFixup(RBNode* x);
 
 public:
     RedBlackTree();
@@ -194,6 +195,7 @@ RBNode* RedBlackTree::searchRecord(int record_id) {
         }
     }
 
+    // Return nullptr if the record with the specified record_id is not found
     return current == NIL ? nullptr : current;
 }
 
@@ -211,48 +213,3 @@ RBNode* RedBlackTree::minimum(RBNode* x) {
     }
     return x;
 }
-
-void RedBlackTree::transplant(RBNode* u, RBNode* v) {
-    if (u->parent == NIL) {
-        root = v;
-    } else if (u == u->parent->left) {
-        u->parent->left = v;
-    } else {
-        u->parent->right = v;
-    }
-    v->parent = u->parent;
-}
-
-
-// int main() {
-//     RedBlackTree rbTree;
-
-//     // Example of inserting records
-//     rbTree.insert(1, "Country1", "Buyer1", "Origin1", "State1", "SellerCountry1", "Seller1", "SellerOrigin1", "SellerState1", 20, "Male", "Slave1", "Black", "2023-01-01", "5", 10, "Credit", 80, 1000);
-//     rbTree.insert(2, "Country2", "Buyer2", "Origin2", "State2", "SellerCountry2", "Seller2", "SellerOrigin2", "SellerState2", 25, "Female", "Slave2", "White", "2023-01-02", "8", 5, "Cash", 90, 1200);
-//     rbTree.insert(3, "Country3", "Buyer3", "Origin3", "State3", "SellerCountry3", "Seller3", "SellerOrigin3", "SellerState3", 22, "Male", "Slave3", "Brown", "2023-01-03", "10", 15, "Credit", 85, 800);
-
-//     // Example of searching for a record
-//     RBNode* foundRecord = rbTree.searchRecord(2);
-//     if (foundRecord != nullptr) {
-//         cout << "Record found: " << foundRecord->BuyerFullName << endl;
-//     } else {
-//         cout << "Record not found." << endl;
-//     }
-
-//     // Example of deleting a record
-//     //rbTree.deleteRecord(2);
-
-//     // Example of searching for a deleted record
-//     foundRecord = rbTree.searchRecord(2);
-//     if (foundRecord != nullptr) {
-//         cout << "Record found: " << foundRecord->BuyerFullName << endl;
-//     } else {
-//         cout << "Record not found." << endl;
-//     }
-
-//     cout << "Inorder Traversal:" << endl;
-//     rbTree.inorderTraversal(rbTree.getRoot());
-
-//     return 0;
-// }
