@@ -50,9 +50,15 @@ int main(){
 	// rbt.inorderTraversal(rbt.getRoot());
 
 	ifstream data_in("input/slavery_ids.csv");
-	string line;
+	string line, val;
 	while(getline(data_in, line)){
-		cout << line << endl;
+		stringstream ss(line);
+		string val;
+		vector<string> values;
+		while (getline(ss, val, ',')) {
+			
+            values.push_back(val);
+        }
 	}
 	return 0;
 }
