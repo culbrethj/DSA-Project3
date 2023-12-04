@@ -13,7 +13,7 @@ int main(){
 		switch(outer_selection){
 			case 1:
 				while(inner_selection != 3){
-					cout << "Insertion tests\n1. Insert full dataset (9600 records)\n2. Insert partial dataset\n3. Return to main menu\nSelection: " << endl;
+					cout << "Insertion tests\n1. Insert full dataset (9600 rows)\n2. Insert partial dataset\n3. Return to main menu\nSelection: " << endl;
 					cin >> inner_selection;
 					switch(inner_selection){
 						case 1:

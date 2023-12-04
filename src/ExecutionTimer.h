@@ -57,5 +57,5 @@ void ExecutionTimer::insert_full(){
 
 }
 void ExecutionTimer::insert_partial(int n){
-    
+
 }
