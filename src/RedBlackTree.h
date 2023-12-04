@@ -34,22 +34,18 @@ private:
     void leftRotate(RBNode* x);
     void rightRotate(RBNode* y);
     void insertFixup(RBNode* z);
-    RBNode* search(int record_id);
     RBNode* minimum(RBNode* x);
-    void transplant(RBNode* u, RBNode* v);
-    void deleteFixup(RBNode* x);
+
+    RBNode* searchRecord(int record_id);
+    void inorderTraversal(RBNode* node);
 
 public:
     RedBlackTree();
     ~RedBlackTree();
     void destroyTree(RBNode* node);
-    RBNode* getRoot() const {
-        return root;
-    }
     void insert(int record_id, Packet packet);
-    RBNode* searchRecord(int record_id);
-    void inorderTraversal(RBNode* node);
-    void deleteRecord(int record_id);
+    void search(int record_id);
+    void inorder();
 };
 
 RedBlackTree::RedBlackTree() {
@@ -203,7 +199,7 @@ RBNode* RedBlackTree::searchRecord(int record_id) {
 void RedBlackTree::inorderTraversal(RBNode* node) {
     if (node != NIL) {
         inorderTraversal(node->left);
-        cout << "Record ID: " << node->record_id << endl;
+        cout << "ID: " << node->record_id << ", State: " << node->data.buyer_state  << endl;
         inorderTraversal(node->right);
     }
 }
@@ -215,144 +211,17 @@ RBNode* RedBlackTree::minimum(RBNode* x) {
     return x;
 }
 
-void RedBlackTree::transplant(RBNode* u, RBNode* v) {
-    if (u->parent == NIL) {
-        root = v;
-    } else if (u == u->parent->left) {
-        u->parent->left = v;
-    } else {
-        u->parent->right = v;
+void RedBlackTree::search(int record_id) {
+    RBNode* node = searchRecord(record_id);
+
+    if(node != nullptr){
+        cout << "Record with ID " << record_id << " found!" << endl;
     }
-    v->parent = u->parent;
-}
-
-void RedBlackTree::deleteFixup(RBNode* x) {
-        while (x != root && x->color == BLACK) {
-        if (x == x->parent->left) {
-            RBNode* w = x->parent->right;
-            if (w->color == RED) {
-                w->color = BLACK;
-                x->parent->color = RED;
-                leftRotate(x->parent);
-                w = x->parent->right;
-            }
-            if (w->left->color == BLACK && w->right->color == BLACK) {
-                w->color = RED;
-                x = x->parent;
-            } else {
-                if (w->right->color == BLACK) {
-                    w->left->color = BLACK;
-                    w->color = RED;
-                    rightRotate(w);
-                    w = x->parent->right;
-                }
-                w->color = x->parent->color;
-                x->parent->color = BLACK;
-                w->right->color = BLACK;
-                leftRotate(x->parent);
-                x = root;
-            }
-        } else {
-            RBNode* w = x->parent->left;
-            if (w->color == RED) {
-                w->color = BLACK;
-                x->parent->color = RED;
-                rightRotate(x->parent);
-                w = x->parent->left;
-            }
-            if (w->right->color == BLACK && w->left->color == BLACK) {
-                w->color = RED;
-                x = x->parent;
-            } else {
-                if (w->left->color == BLACK) {
-                    w->right->color = BLACK;
-                    w->color = RED;
-                    leftRotate(w);
-                    w = x->parent->left;
-                }
-                w->color = x->parent->color;
-                x->parent->color = BLACK;
-                w->left->color = BLACK;
-                rightRotate(x->parent);
-                x = root;
-            }
-        }
-    }
-    x->color = BLACK;
-}
-
-void RedBlackTree::deleteRecord(int record_id) {
-    RBNode* z = searchRecord(record_id);
-    if (z == NIL) {
-        cout << "Record not found." << endl;
-        return;
-    }
-
-    RBNode* y = z;
-    RBNode* x;
-    Color y_original_color = y->color;
-
-    if (z->left == NIL) {
-        x = z->right;
-        transplant(z, z->right);
-    } else if (z->right == NIL) {
-        x = z->left;
-        transplant(z, z->left);
-    } else {
-        y = minimum(z->right);
-        y_original_color = y->color;
-        x = y->right;
-
-        if (y->parent == z) {
-            x->parent = y;
-        } else {
-            transplant(y, y->right);
-            y->right = z->right;
-            y->right->parent = y;
-        }
-
-        transplant(z, y);
-        y->left = z->left;
-        y->left->parent = y;
-        y->color = z->color;
-    }
-
-    delete z;
-
-    if (y_original_color == BLACK) {
-        deleteFixup(x);
+    else{
+        cout << "Record with ID " << record_id << " not found." << endl;
     }
 }
 
-// int main() {
-//     RedBlackTree rbTree;
-
-//     // Example of inserting records
-//     rbTree.insert(1, "Country1", "Buyer1", "Origin1", "State1", "SellerCountry1", "Seller1", "SellerOrigin1", "SellerState1", 20, "Male", "Slave1", "Black", "2023-01-01", "5", 10, "Credit", 80, 1000);
-//     rbTree.insert(2, "Country2", "Buyer2", "Origin2", "State2", "SellerCountry2", "Seller2", "SellerOrigin2", "SellerState2", 25, "Female", "Slave2", "White", "2023-01-02", "8", 5, "Cash", 90, 1200);
-//     rbTree.insert(3, "Country3", "Buyer3", "Origin3", "State3", "SellerCountry3", "Seller3", "SellerOrigin3", "SellerState3", 22, "Male", "Slave3", "Brown", "2023-01-03", "10", 15, "Credit", 85, 800);
-
-//     // Example of searching for a record
-//     RBNode* foundRecord = rbTree.searchRecord(2);
-//     if (foundRecord != nullptr) {
-//         cout << "Record found: " << foundRecord->BuyerFullName << endl;
-//     } else {
-//         cout << "Record not found." << endl;
-//     }
-
-//     // Example of deleting a record
-//     //rbTree.deleteRecord(2);
-
-//     // Example of searching for a deleted record
-//     foundRecord = rbTree.searchRecord(2);
-//     if (foundRecord != nullptr) {
-//         cout << "Record found: " << foundRecord->BuyerFullName << endl;
-//     } else {
-//         cout << "Record not found." << endl;
-//     }
-
-//     cout << "Inorder Traversal:" << endl;
-//     rbTree.inorderTraversal(rbTree.getRoot());
-
-//     return 0;
-// }
+void RedBlackTree::inorder() {
+    inorderTraversal(root);
+}

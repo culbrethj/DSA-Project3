@@ -51,7 +51,7 @@ void BTree::insert(int record_id, Packet packet){
         root->id_and_key.push_back(make_pair(record_id, packet));
     }
     else{
-        if (root->id_and_key.size() >= MAX_KEYS){
+        if (root->id_and_key.size() > MAX_KEYS){
             Node* new_root = new Node();
             new_root->children.push_back(root);
             splitNode(new_root, root, packet);
@@ -80,29 +80,29 @@ BTree::BTree() {
     root = nullptr;
 }
 
-void BTree::insertHelper(Node *node, int record_id, Packet packet){
-    if (node->isLeaf()){
+void BTree::insertHelper(Node* node, int record_id, Packet packet) {
+    if (node->isLeaf()) {
         node->id_and_key.push_back(make_pair(record_id, packet));
         sort(node->id_and_key.begin(), node->id_and_key.end(), [](const auto& a, const auto& b) {
             return a.first < b.first;
         });
+
+        if (node->id_and_key.size() > MAX_KEYS) {
+            Node* parent = node->parent;
+            splitNode(parent, node, packet);
+        }
     }
-    else{
+    else {
         size_t i = 0;
-        while (i < node->id_and_key.size() && record_id > node->id_and_key.at(i).first){
-            i++;
+        while (i < node->id_and_key.size() && record_id > node->id_and_key.at(i).first) {
+            ++i;
         }
-        if (i < node->children.size() && node->children.at(i)->id_and_key.size() >= MAX_KEYS){
-            splitNode(node, node->children.at(i), packet);
-            if (record_id > node->id_and_key.at(i).first){
-                i++;
-            }
-        }
+
         insertHelper(node->children.at(i), record_id, packet);
     }
 }
 
-void BTree::splitNode(Node *parent, Node *node, Packet packet){
+void BTree::splitNode(Node* parent, Node* node, Packet packet) {
     Node* new_node = new Node();
     int mid = MAX_KEYS / 2;
     int median = node->id_and_key[mid].first;
@@ -110,24 +110,37 @@ void BTree::splitNode(Node *parent, Node *node, Packet packet){
     new_node->id_and_key.assign(node->id_and_key.begin() + mid + 1, node->id_and_key.end());
     node->id_and_key.erase(node->id_and_key.begin() + mid, node->id_and_key.end());
 
-    if (!node->isLeaf()){
+
+    if (!node->isLeaf()) {
         new_node->children.assign(node->children.begin() + mid + 1, node->children.end());
         node->children.erase(node->children.begin() + mid + 1, node->children.end());
+
+        for (auto child : new_node->children) {
+            child->parent = new_node;
+        }
     }
 
     if (parent != nullptr) {
-        vector<int> ids;
-        for (size_t i = 0; i < parent->id_and_key.size(); i++) {
-            ids.push_back(parent->id_and_key.at(i).first);
+        size_t i = 0;
+        while (i < parent->id_and_key.size() && median > parent->id_and_key.at(i).first) {
+            ++i;
         }
 
-        auto it = std::upper_bound(ids.begin(), ids.end(), median);
-        int pos = it - ids.begin();
-
-        parent->id_and_key.insert(parent->id_and_key.begin() + pos, std::make_pair(median, packet));
-        parent->children.insert(parent->children.begin() + pos + 1, new_node);
+        parent->id_and_key.insert(parent->id_and_key.begin() + i, make_pair(median, packet));
+        parent->children.insert(parent->children.begin() + i + 1, new_node);
 
         new_node->parent = parent;
+    } else {
+        // Update root in case of splitting the root node
+        Node* new_root = new Node();
+        new_root->id_and_key.push_back(make_pair(median, packet));
+        new_root->children.push_back(node);
+        new_root->children.push_back(new_node);
+
+        node->parent = new_root;
+        new_node->parent = new_root;
+
+        root = new_root;
     }
 
     node->parent = parent;
@@ -162,37 +175,14 @@ void BTree::inorderTraversal(Node *node){
                 inorderTraversal(node->children.at(i));
 
                 if (i < node->id_and_key.size()) {
-                    cout << "ID: " << node->id_and_key.at(i).first << " State: " << node->id_and_key.at(i).second.buyer_state << " "
-                         << node->id_and_key.at(i).second.seller_county << " " << endl;
+                    cout << "ID: " << node->id_and_key.at(i).first << ", State: " << node->id_and_key.at(i).second.buyer_state << " " << endl;
                 }
             }
         }
         else{
             for (size_t i = 0; i < node->id_and_key.size(); i++){
-                cout << "ID: " << node->id_and_key.at(i).first << " State: " << node->id_and_key.at(i).second.buyer_state << " "
-                     << node->id_and_key.at(i).second.seller_county << " " << endl;
+                cout << "ID: " << node->id_and_key.at(i).first << ", State: " << node->id_and_key.at(i).second.buyer_state << " " << endl;
             }
         }
     }
 }
-
-//int main(){
-//    BTree btree;
-//
-//    btree.insert(1, "Country1", "Buyer1", "Origin1", "State1", "SellerCountry1", "Seller1", "SellerOrigin1", "SellerState1", 20, "Male", "Slave1", "Black", "2023-01-01", "5", 10, "Credit", 80, 1000);
-//    btree.insert(2, "Country2", "Buyer2", "Origin2", "State2", "SellerCountry2", "Seller2", "SellerOrigin2", "SellerState2", 25, "Female", "Slave2", "White", "2023-01-02", "8", 5, "Cash", 90, 1200);
-//    btree.insert(5000, "Country3", "Buyer3", "Origin3", "State3", "SellerCountry3", "Seller3", "SellerOrigin3", "SellerState3", 22, "Male", "Slave3", "Brown", "2023-01-03", "10", 15, "Credit", 85, 800);
-//    btree.insert(9600, "Country1", "Buyer1", "Origin1", "State1", "SellerCountry1", "Seller1", "SellerOrigin1", "SellerState1", 20, "Male", "Slave1", "Black", "2023-01-01", "5", 10, "Credit", 80, 1000);
-//    btree.insert(2000, "Country2", "Buyer2", "Origin2", "State2", "SellerCountry2", "Seller2", "SellerOrigin2", "SellerState2", 25, "Female", "Slave2", "White", "2023-01-02", "8", 5, "Cash", 90, 1200);
-//    btree.insert(1221, "Country3", "Buyer3", "Origin3", "State3", "SellerCountry3", "Seller3", "SellerOrigin3", "SellerState3", 22, "Male", "Slave3", "Brown", "2023-01-03", "10", 15, "Credit", 85, 800);
-//    btree.insert(8411, "Country1", "Buyer1", "Origin1", "State1", "SellerCountry1", "Seller1", "SellerOrigin1", "SellerState1", 20, "Male", "Slave1", "Black", "2023-01-01", "5", 10, "Credit", 80, 1000);
-//    btree.insert(6501, "Country2", "Buyer2", "Origin2", "State2", "SellerCountry2", "Seller2", "SellerOrigin2", "SellerState2", 25, "Female", "Slave2", "White", "2023-01-02", "8", 5, "Cash", 90, 1200);
-//    btree.insert(10, "Country3", "Buyer3", "Origin3", "State3", "SellerCountry3", "Seller3", "SellerOrigin3", "SellerState3", 22, "Male", "Slave3", "Brown", "2023-01-03", "10", 15, "Credit", 85, 800);
-//
-//    btree.inorder();
-//
-//    int search_id = 10;
-//    btree.search(search_id);
-//
-//    return 0;
-//}
