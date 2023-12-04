@@ -100,4 +100,3 @@ RedBlackTree Parser::generateRBTree(){
 	}
     return rbt;
 }
-
