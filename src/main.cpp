@@ -45,7 +45,7 @@ int main(){
 	//  rbt.insert(10, p9);
 
 	auto start_time = std::chrono::high_resolution_clock::now();
-	BTree bt2 = Parser::generateBTree();
+	//BTree bt2 = Parser::generateBTree();
 	auto end_time = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
     std::cout << "Time to insert into B tree: " << duration.count() << " microseconds" << std::endl;
