@@ -1,51 +1,45 @@
 #include <iostream>
 #include <fstream>
-#include <set>
-#include <chrono>
-#include "Parser.h"
+#include "ExecutionTimer.h"
 using namespace std;
 
 int main(){
-	auto start_time = std::chrono::high_resolution_clock::now();
-	BTree btree = Parser::generateBTree();
-	auto end_time = std::chrono::high_resolution_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
-    std::cout << "Time to insert into B tree: " << duration.count() << " microseconds" << std::endl;
-
-	auto start_time2 = std::chrono::high_resolution_clock::now();
-	RedBlackTree rbtree = Parser::generateRBTree();
-	auto end_time2 = std::chrono::high_resolution_clock::now();
-	auto duration2 = std::chrono::duration_cast<std::chrono::microseconds>(end_time2 - start_time2);
-    std::cout << "Time to insert into Red Black Tree: " << duration2.count() << " microseconds" << std::endl;
-    cout << endl;
-
-    auto start_time3 = std::chrono::high_resolution_clock::now();
-    btree.search(10);
-    btree.search(10000);
-    auto end_time3 = std::chrono::high_resolution_clock::now();
-    auto duration3 = std::chrono::duration_cast<std::chrono::microseconds>(end_time3 - start_time3);
-    std::cout << "Time to search for a B tree: " << duration3.count() << " microseconds" << std::endl;
-    cout << endl;
-
-    auto start_time4 = std::chrono::high_resolution_clock::now();
-    rbtree.search(10);
-    rbtree.search(10000);
-    auto end_time4 = std::chrono::high_resolution_clock::now();
-    auto duration4 = std::chrono::duration_cast<std::chrono::microseconds>(end_time4 - start_time4);
-    std::cout << "Time to search for a Red Black tree: " << duration4.count() << " microseconds" << std::endl;
-    cout << endl;
-
-    auto start_time5 = std::chrono::high_resolution_clock::now();
-    btree.inorder();
-    auto end_time5 = std::chrono::high_resolution_clock::now();
-    auto duration5 = std::chrono::duration_cast<std::chrono::microseconds>(end_time5 - start_time5);
-    std::cout << "Time for inorder Traversal in a B tree: " << duration5.count() << " microseconds" << std::endl;
-
-    auto start_time6 = std::chrono::high_resolution_clock::now();
-    rbtree.inorder();
-    auto end_time6 = std::chrono::high_resolution_clock::now();
-    auto duration6 = std::chrono::duration_cast<std::chrono::microseconds>(end_time6 - start_time6);
-    std::cout << "Time for inorder Traversal in a Red Black tree: " << duration6.count() << " microseconds" << std::endl;
-
+	cout << "Welcome to Ernesto, Jackson, and Muhimin's final project for DSA!" << endl;
+	cout << "In this project, we examine the performance of a Red Black tree versus a B tree." << endl;
+	int inner_selection = -1, outer_selection = -1;
+	while(outer_selection != 5){
+		cout << "Select an option:\n1. Insertion tests\n2. Searching tests\n3. Traversal tests\n4. Applications in Data analytics\n5. Exit program\nSelection: ";
+		cin >> outer_selection;
+		switch(outer_selection){
+			case 1:
+				while(inner_selection != 3){
+					cout << "Insertion tests\n1. Insert full dataset (9600 records)\n2. Insert partial dataset\n3. Return to main menu\nSelection: " << endl;
+					cin >> inner_selection;
+					switch(inner_selection){
+						case 1:
+							ExecutionTimer::insert_full();
+							break;
+						case 2:
+							ExecutionTimer::insert_partial(1000);
+							break;
+						default:
+							break;
+					}
+				}
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5:
+				cout << "Exiting" << endl;
+				break;
+			default:
+				cout << "Invalid choice" << endl;
+				break;
+		}
+	}
 	return 0;
 }
