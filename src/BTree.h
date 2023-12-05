@@ -105,11 +105,13 @@ void BTree::insertHelper(Node* node, int record_id, Packet packet){
             return a.first < b.first;
         });
 
+        //checks if limit has been exceeded and calls split if it has
         if (node->id_and_key.size() > MAX_KEYS){
             Node* parent = node->parent;
             splitNode(parent, node, packet);
         }
     }
+    //if the node is not a leaf, then go to the next node given the conditions in the while loop, and do recursion.
     else{
         size_t i = 0;
         while (i < node->id_and_key.size() && record_id > node->id_and_key.at(i).first){
@@ -119,14 +121,17 @@ void BTree::insertHelper(Node* node, int record_id, Packet packet){
     }
 }
 
+//splits the Nodes if there is an overflow of N+1
 void BTree::splitNode(Node* parent, Node* node, Packet packet) {
     Node* new_node = new Node();
     int mid = MAX_KEYS / 2;
     int median = node->id_and_key[mid].first;
 
+    //copies some of the nodes into the new node
     new_node->id_and_key.assign(node->id_and_key.begin() + mid + 1, node->id_and_key.end());
     node->id_and_key.erase(node->id_and_key.begin() + mid, node->id_and_key.end());
 
+    //if the node is a leaf then copy the values to the new children
     if (!node->isLeaf()) {
         new_node->children.assign(node->children.begin() + mid + 1, node->children.end());
         node->children.erase(node->children.begin() + mid + 1, node->children.end());
@@ -136,6 +141,7 @@ void BTree::splitNode(Node* parent, Node* node, Packet packet) {
         }
     }
 
+    //if the parent is not null then insert the fresh key to the end of the parent node
     if (parent != nullptr){
         size_t i = 0;
         while (i < parent->id_and_key.size() && median > parent->id_and_key.at(i).first) {
@@ -147,6 +153,7 @@ void BTree::splitNode(Node* parent, Node* node, Packet packet) {
 
         new_node->parent = parent;
     }
+    //if the parent is null, make a node and insert the fresh key to it.
     else{
         Node* new_root = new Node();
         new_root->id_and_key.push_back(make_pair(median, packet));
@@ -161,7 +168,7 @@ void BTree::splitNode(Node* parent, Node* node, Packet packet) {
     node->parent = parent;
 }
 
-
+//searches the nodes and each key for the correct value. Pretty similar to AVL tree search.
 Node *BTree::searchHelper(Node *node, int record_id){
     if(node == nullptr){
         return nullptr;
