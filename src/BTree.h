@@ -46,6 +46,7 @@ private:
     void inorderTraversal(Node* node);
 };
 
+//checks if the desired node has any children
 bool Node::isLeaf() const{
     return children.empty();
 }
@@ -54,12 +55,16 @@ Node::Node(){
     parent = nullptr;
 }
 
+//insert an ID and packet into tree
 void BTree::insert(int record_id, Packet packet){
+    //if there is no node, make a new one and insert an ID and packet
     if (root == nullptr){
         root = new Node();
         root->id_and_key.push_back(make_pair(record_id, packet));
     }
+    //otherwise call insert helper
     else{
+        //note that if the # of entries has exceeded the max number of keys splitNode is called to handle splitting.
         if (root->id_and_key.size() > MAX_KEYS){
             Node* new_root = new Node();
             new_root->children.push_back(root);
@@ -70,6 +75,7 @@ void BTree::insert(int record_id, Packet packet){
     }
 }
 
+//calls search helper and prints if the ID is found, prints not found otherwise
 void BTree::search(int record_id){
     Node* node = searchHelper(root, record_id);
 
@@ -89,9 +95,12 @@ BTree::BTree() {
     root = nullptr;
 }
 
+//called from the main method insert()
 void BTree::insertHelper(Node* node, int record_id, Packet packet){
+    //if the node is a leaf (has no children), then add a key (ID and packet)
     if (node->isLeaf()){
         node->id_and_key.push_back(make_pair(record_id, packet));
+        //after inserting the key, sort the keys in the node by the ID of the keys.
         sort(node->id_and_key.begin(), node->id_and_key.end(), [](const auto& a, const auto& b) {
             return a.first < b.first;
         });
