@@ -239,7 +239,6 @@ void RedBlackTree::statesInorderTraversal(RBNode* node, unordered_map<string, in
         statesInorderTraversal(node->right, mp);
     }
 }
-<<<<<<< HEAD
 
 void RedBlackTree::agesInorderTraversal(RBNode* node, long long int& total, int& count){
     if (node != NIL) {
@@ -250,9 +249,8 @@ void RedBlackTree::agesInorderTraversal(RBNode* node, long long int& total, int&
     }
 }
 
-=======
+
 // Helper function to find the minimum node in the subtree rooted at x
->>>>>>> 1accfa7abb739c5026a404984fc0b7922c459d49
 RBNode* RedBlackTree::minimum(RBNode* x) {
     while (x->left != NIL) {
         x = x->left;

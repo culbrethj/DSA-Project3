@@ -19,7 +19,7 @@ void ExecutionTimer::insert(){
     cout << "Inserting 9600 rows of 19 columns into each tree..." << endl;
 
     auto start_time = chrono::high_resolution_clock::now();
-	BTree btree = Parser::generateBTree();
+	//BTree btree = Parser::generateBTree();
 	auto end_time = chrono::high_resolution_clock::now();
 	auto duration = chrono::duration_cast<chrono::microseconds>(end_time - start_time);
     cout << "Time to insert into B tree: " << duration.count() << " microseconds" << endl;
@@ -35,7 +35,7 @@ void ExecutionTimer::search(int n){
     cout << "Searching for " << n << " random records in each tree..." << endl;
 
     set<int> records;
-    while(records.size() < n){
+    while(records.size() < (size_t)n){
         int random_record = rand() % 9599;
         if (!records.count(random_record)) records.emplace(random_record);
     }
