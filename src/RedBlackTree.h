@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <map>
 #include "Packet.h"
 using namespace std;
 
@@ -38,6 +39,7 @@ private:
 
     RBNode* searchRecord(int record_id);
     void inorderTraversal(RBNode* node);
+    void statesInorderTraversal(RBNode* node, map<string, int>& mp);
 
 public:
     RedBlackTree();
@@ -46,6 +48,7 @@ public:
     void insert(int record_id, Packet packet);
     void search(int record_id);
     void inorder();
+    map<string, int> statesInorder();
 };
 
 RedBlackTree::RedBlackTree() {
@@ -204,6 +207,15 @@ void RedBlackTree::inorderTraversal(RBNode* node) {
     }
 }
 
+void RedBlackTree::statesInorderTraversal(RBNode* node, map<string, int>& mp){
+    if (node != NIL) {
+        inorderTraversal(node->left, mp);
+        if (!mp[node->data.buyer_state]) mp[node->data.buyer_state] = 1;
+        else mp[node->data.buyer_state]++;
+        inorderTraversal(node->right, mp);
+    }
+}
+
 RBNode* RedBlackTree::minimum(RBNode* x) {
     while (x->left != NIL) {
         x = x->left;
@@ -224,4 +236,10 @@ void RedBlackTree::search(int record_id) {
 
 void RedBlackTree::inorder() {
     inorderTraversal(root);
+}
+
+map<string, int> RedBlackTree::statesInorder(){
+    map<string, int> mp;
+    statesInorderTraversal(root, mp);
+    return mp;
 }

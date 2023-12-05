@@ -12,26 +12,31 @@ int main(){
 		cin >> outer_selection;
 		switch(outer_selection){
 			case 1:
+				ExecutionTimer::insert();
+				break;
+			case 2:
+				int n;
+				cout << "Number of records: ";
+				cin >> n;
+				ExecutionTimer::search(n);
+				break;
+			case 3:
+				ExecutionTimer::traverse();
+				break;
+			case 4:
 				while(inner_selection != 3){
-					cout << "Insertion tests\n1. Insert full dataset (9600 rows)\n2. Insert partial dataset\n3. Return to main menu\nSelection: " << endl;
+					cout << "Applications in Data analytics\n1. Top 5 Hotspots\n2. ()\nSelection: " << endl;
 					cin >> inner_selection;
 					switch(inner_selection){
 						case 1:
-							ExecutionTimer::insert_full();
+							
 							break;
 						case 2:
-							ExecutionTimer::insert_partial(1000);
 							break;
 						default:
 							break;
 					}
 				}
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
 				break;
 			case 5:
 				cout << "Exiting" << endl;
