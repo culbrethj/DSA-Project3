@@ -12,20 +12,7 @@ class ExecutionTimer{
     static void search(int n);
     static void traverse();
     static void top5Locations();
-    // static void temp(){
-
-    //     auto start_time5 = chrono::high_resolution_clock::now();
-    //     btree.inorder();
-    //     auto end_time5 = chrono::high_resolution_clock::now();
-    //     auto duration5 = chrono::duration_cast<chrono::microseconds>(end_time5 - start_time5);
-    //     cout << "Time for inorder Traversal in a B tree: " << duration5.count() << " microseconds" << endl;
-
-    //     auto start_time6 = chrono::high_resolution_clock::now();
-    //     rbtree.inorder();
-    //     auto end_time6 = chrono::high_resolution_clock::now();
-    //     auto duration6 = chrono::duration_cast<chrono::microseconds>(end_time6 - start_time6);
-    //     cout << "Time for inorder Traversal in a Red Black tree: " << duration6.count() << " microseconds" << endl;
-    // }
+    static void averageAge();
 };
 
 void ExecutionTimer::insert(){
@@ -94,8 +81,23 @@ void ExecutionTimer::top5Locations(){
     RedBlackTree rbt = Parser::generateRBTree();
     unordered_map<string, int> mp = rbt.statesInorder();
     vector<pair<string, int>> top5;
+    auto customComparator = [](const std::pair<string, int>& a, const std::pair<string, int>& b) {
+        return a.second > b.second;
+    };
     for(auto state : mp){
         top5.push_back(make_pair(state.first, state.second));
     }
-    for(auto p : top5) cout << p.first << " " << p.second << endl;
+    sort(top5.begin(), top5.end(), customComparator);
+
+    cout << "Most active states:\n";
+    for(int i = 0; i < 5; i++){
+        auto p = top5[i];
+        cout << p.first << " " << p.second << endl;
+    }
+}
+
+void ExecutionTimer::averageAge(){
+    RedBlackTree rbt = Parser::generateRBTree();
+    double avgAge = rbt.agesInorder();
+    cout << "Average slave age is " << avgAge << endl;
 }

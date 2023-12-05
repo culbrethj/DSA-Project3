@@ -25,14 +25,14 @@ int main(){
 				break;
 			case 4:
 				while(inner_selection != 3){
-					cout << "Applications in Data analytics\n1. Top 5 Hotspots\n2. ()\nSelection: " << endl;
+					cout << "Applications in Data analytics\n1. Top 5 Hotspots\n2. Average age\nSelection: " << endl;
 					cin >> inner_selection;
 					switch(inner_selection){
 						case 1:
 							ExecutionTimer::top5Locations();
 							break;
 						case 2:
-
+							ExecutionTimer::averageAge();
 							break;
 						default:
 							break;

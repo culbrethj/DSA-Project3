@@ -40,6 +40,7 @@ private:
     RBNode* searchRecord(int record_id);
     void inorderTraversal(RBNode* node);
     void statesInorderTraversal(RBNode* node, unordered_map<string, int>& mp);
+    void agesInorderTraversal(RBNode* node, long long int& total, int& count);
 
 public:
     RedBlackTree();
@@ -49,6 +50,7 @@ public:
     void search(int record_id);
     void inorder();
     unordered_map<string, int> statesInorder();
+    double agesInorder();
 };
 
 RedBlackTree::RedBlackTree() {
@@ -216,6 +218,15 @@ void RedBlackTree::statesInorderTraversal(RBNode* node, unordered_map<string, in
     }
 }
 
+void RedBlackTree::agesInorderTraversal(RBNode* node, long long int& total, int& count){
+    if (node != NIL) {
+        agesInorderTraversal(node->left, total, count);
+        total += node->data.slave_age;
+        count++;
+        agesInorderTraversal(node->right, total, count);
+    }
+}
+
 RBNode* RedBlackTree::minimum(RBNode* x) {
     while (x->left != NIL) {
         x = x->left;
@@ -242,4 +253,11 @@ unordered_map<string, int> RedBlackTree::statesInorder(){
     unordered_map<string, int> mp;
     statesInorderTraversal(root, mp);
     return mp;
+}
+
+double RedBlackTree::agesInorder(){
+    long long int sum = 0;
+    int count = 0;
+    agesInorderTraversal(root, sum, count);
+    return sum / count;
 }
