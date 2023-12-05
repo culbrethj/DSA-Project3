@@ -4,34 +4,37 @@
 #include "Packet.h"
 using namespace std;
 
+// Enumeration for node color in Red-Black Tree
 enum Color { RED, BLACK };
 
+// Class representing a node in the Red-Black Tree
 class RBNode {
 public:
-    int record_id;
+    int record_id;   // Unique identifier for the record
+    Packet data;     // Data associated with the record (assuming Packet is a class or struct)
 
-    Packet data;
+    Color color;      // Color of the node (either RED or BLACK)
+    RBNode* left;     // Pointer to the left child
+    RBNode* right;    // Pointer to the right child
+    RBNode* parent;   // Pointer to the parent node
 
-    Color color;
-    RBNode* left;
-    RBNode* right;
-    RBNode* parent;
-
-    // Constructor
+    // Constructor for creating a node with given record_id and data
     RBNode(int record_id, Packet p) : 
         record_id(record_id),
         data(p),
-        color(RED),
+        color(RED), // New nodes are initially colored as RED
         left(nullptr),
         right(nullptr),
         parent(nullptr) {}
 };
 
+// Class representing a Red-Black Tree
 class RedBlackTree {
 private:
-    RBNode* root;
-    RBNode* NIL;
+    RBNode* root; // Pointer to the root of the tree
+    RBNode* NIL; // Sentinel node representing the NULL or leaf nodes
 
+    // Private helper functions for tree operations
     void leftRotate(RBNode* x);
     void rightRotate(RBNode* y);
     void insertFixup(RBNode* z);
@@ -42,26 +45,40 @@ private:
     void statesInorderTraversal(RBNode* node, unordered_map<string, int>& mp);
 
 public:
+    // Constructor and Destructor for initializing the Red-Black Tree
     RedBlackTree();
     ~RedBlackTree();
+
+    // Public function to destroy the tree starting from a given node
     void destroyTree(RBNode* node);
+
+    // Public function to insert a new record with given record_id and packet data
     void insert(int record_id, Packet packet);
+
+    // Public function to search for a record with a given record_id
     void search(int record_id);
+
+    // Public function to perform an inorder traversal of the tree
     void inorder();
+
+    // Public function to count the occurrences of each state in the tree
     unordered_map<string, int> statesInorder();
 };
 
+// Constructor for the Red-Black Tree
 RedBlackTree::RedBlackTree() {
     Packet blank;
     NIL = new RBNode(0, blank);
     NIL->color = BLACK;
     root = NIL;
 }
-
+// Destructor
 RedBlackTree::~RedBlackTree() {
     destroyTree(root);
     delete NIL;
 }
+
+// Helper function to destroy the tree starting from a given node
 void RedBlackTree::destroyTree(RBNode* node) {
     if (node != NIL) {
         destroyTree(node->left);
@@ -69,7 +86,7 @@ void RedBlackTree::destroyTree(RBNode* node) {
         delete node;
     }
 }
-
+// Helper function to perform a left rotation on the given node
 void RedBlackTree::leftRotate(RBNode* x) {
     RBNode* y = x->right;
     x->right = y->left;
@@ -92,6 +109,7 @@ void RedBlackTree::leftRotate(RBNode* x) {
     x->parent = y;
 }
 
+// Helper function to perform a right rotation on the given node
 void RedBlackTree::rightRotate(RBNode* y) {
     RBNode* x = y->left;
     y->left = x->right;
@@ -114,6 +132,7 @@ void RedBlackTree::rightRotate(RBNode* y) {
     y->parent = x;
 }
 
+// Helper function to fix the Red-Black Tree properties after insertion
 void RedBlackTree::insertFixup(RBNode* z) {
     while (z->parent->color == RED) {
         if (z->parent == z->parent->parent->left) {
@@ -153,6 +172,7 @@ void RedBlackTree::insertFixup(RBNode* z) {
     root->color = BLACK;
 }
 
+// Public function to insert a new record with given record_id and packet data
 void RedBlackTree::insert(int record_id, Packet packet) {
     RBNode* z = new RBNode(record_id, packet);
 
@@ -183,7 +203,7 @@ void RedBlackTree::insert(int record_id, Packet packet) {
 
     insertFixup(z);
 }
-
+// Helper function to search for a record with a given record_id
 RBNode* RedBlackTree::searchRecord(int record_id) {
     RBNode* current = root;
 
@@ -199,6 +219,7 @@ RBNode* RedBlackTree::searchRecord(int record_id) {
     return current == NIL ? nullptr : current;
 }
 
+// Helper function to perform an inorder traversal of the tree
 void RedBlackTree::inorderTraversal(RBNode* node) {
     if (node != NIL) {
         inorderTraversal(node->left);
@@ -207,6 +228,7 @@ void RedBlackTree::inorderTraversal(RBNode* node) {
     }
 }
 
+// Helper function to perform an inorder traversal of the tree and count occurrences of each state
 void RedBlackTree::statesInorderTraversal(RBNode* node, unordered_map<string, int>& mp){
     if (node != NIL) {
         statesInorderTraversal(node->left, mp);
@@ -215,7 +237,7 @@ void RedBlackTree::statesInorderTraversal(RBNode* node, unordered_map<string, in
         statesInorderTraversal(node->right, mp);
     }
 }
-
+// Helper function to find the minimum node in the subtree rooted at x
 RBNode* RedBlackTree::minimum(RBNode* x) {
     while (x->left != NIL) {
         x = x->left;
@@ -223,6 +245,7 @@ RBNode* RedBlackTree::minimum(RBNode* x) {
     return x;
 }
 
+// Public function to search for a record with a given record_id
 void RedBlackTree::search(int record_id) {
     RBNode* node = searchRecord(record_id);
 
@@ -233,11 +256,11 @@ void RedBlackTree::search(int record_id) {
         cout << "Record with ID " << record_id << " not found." << endl;
     }
 }
-
+// Public function to perform an inorder traversal of the tree
 void RedBlackTree::inorder() {
     inorderTraversal(root);
 }
-
+// Public function to count the occurrences of each state in the tree
 unordered_map<string, int> RedBlackTree::statesInorder(){
     unordered_map<string, int> mp;
     statesInorderTraversal(root, mp);
