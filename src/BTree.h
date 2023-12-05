@@ -5,9 +5,11 @@
 
 using namespace std;
 
+//I chose 5 as N for the B Tree because I felt it would provide enough differences compared to the RB Tree.
 const int MAX_KEYS = 5;
 
 struct Node{
+    //I am using a vector of pairs, I keep the IDs as ints and the Packets are all of the information of the slave
     vector<pair<int, Packet>> id_and_key;
 
     vector<Node*> children;
@@ -23,17 +25,24 @@ private:
 
 public:
     BTree();
+    //These are the main functions that will be implemented for the program to run.
     void insert(int record_id, Packet packet);
 
     void search(int record_id);
     void inorder();
 
 private:
+    //these are the helper functions to the main fucntions.
+    //insert just inserts each Row of the Excel sheet into the tree with all the slave information
     void insertHelper(Node* node, int record_id, Packet packet);
 
+    //splitNode handles overflow when the number of keys has exceeded N
     void splitNode(Node* parent, Node* node, Packet packet);
 
+    //search just sorts through the tree and finds the desired ID
     Node* searchHelper(Node* node, int record_id);
+    //inorder traversal does a traversal through each node and prints out the ID (We have made a comment on it as to
+    //why we are not printing anything, so read that)
     void inorderTraversal(Node* node);
 };
 
@@ -165,6 +174,9 @@ Node *BTree::searchHelper(Node *node, int record_id){
     }
 }
 
+//for this program we are not ouputting the inorder traversal in order to keep the console not too crowded.
+//the inorder traversal would print 9600 IDs which would make our menu driven program look bad. But here is the
+//implementation
 void BTree::inorderTraversal(Node *node){
     if (node != nullptr){
         if (!node->isLeaf()){
