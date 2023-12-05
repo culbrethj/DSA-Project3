@@ -249,7 +249,6 @@ void RedBlackTree::agesInorderTraversal(RBNode* node, long long int& total, int&
     }
 }
 
-
 // Helper function to find the minimum node in the subtree rooted at x
 RBNode* RedBlackTree::minimum(RBNode* x) {
     while (x->left != NIL) {
