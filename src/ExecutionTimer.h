@@ -15,11 +15,12 @@ class ExecutionTimer{
     static void averageAge();
 };
 
+// Insert test: inserts the entire CSV file into both trees and times each operation
 void ExecutionTimer::insert(){
     cout << "Inserting 9600 rows of 19 columns into each tree..." << endl;
 
     auto start_time = chrono::high_resolution_clock::now();
-	//BTree btree = Parser::generateBTree();
+	BTree btree = Parser::generateBTree();
 	auto end_time = chrono::high_resolution_clock::now();
 	auto duration = chrono::duration_cast<chrono::microseconds>(end_time - start_time);
     cout << "Time to insert into B tree: " << duration.count() << " microseconds" << endl;
@@ -31,6 +32,7 @@ void ExecutionTimer::insert(){
     cout << "Time to insert into Red Black Tree: " << duration2.count() << " microseconds" << endl;
 }
 
+// Search test: randomly selects n elements then searches for them in both trees, recording the time.
 void ExecutionTimer::search(int n){
     cout << "Searching for " << n << " random records in each tree..." << endl;
 
@@ -57,6 +59,7 @@ void ExecutionTimer::search(int n){
     cout << "Time to find in Red Black Tree: " << duration2.count() << " microseconds" << endl;
 }
 
+// Traversal tests: times the time each tree takes to perform an inorder traversal
 void ExecutionTimer::traverse(){
     cout << "Traversing both trees..." << endl;
 
@@ -77,6 +80,7 @@ void ExecutionTimer::traverse(){
     cout << "Time to traverse Red Black Tree: " << duration2.count() << " microseconds" << endl;
 }
 
+// top5 locations: prints the 5 states with the most transactions
 void ExecutionTimer::top5Locations(){
     RedBlackTree rbt = Parser::generateRBTree();
     unordered_map<string, int> mp = rbt.statesInorder();
@@ -92,12 +96,13 @@ void ExecutionTimer::top5Locations(){
     cout << "Most active states:\n";
     for(int i = 0; i < 5; i++){
         auto p = top5[i];
-        cout << p.first << " " << p.second << endl;
+        cout << i + 1 << ". " << p.first << " (" << p.second << " transactions)"<< endl;
     }
 }
 
+// average age: prints the average age of all victims of slavery on record
 void ExecutionTimer::averageAge(){
     RedBlackTree rbt = Parser::generateRBTree();
     double avgAge = rbt.agesInorder();
-    cout << "Average slave age is " << avgAge << endl;
+    cout << "Average victim age is " << avgAge << endl;
 }
