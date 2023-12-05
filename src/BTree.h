@@ -5,9 +5,11 @@
 
 using namespace std;
 
+//I chose 5 as N for the B Tree because I felt it would provide enough differences compared to the RB Tree.
 const int MAX_KEYS = 5;
 
 struct Node{
+    //I am using a vector of pairs, I keep the IDs as ints and the Packets are all of the information of the slave
     vector<pair<int, Packet>> id_and_key;
 
     vector<Node*> children;
@@ -23,20 +25,28 @@ private:
 
 public:
     BTree();
+    //These are the main functions that will be implemented for the program to run.
     void insert(int record_id, Packet packet);
 
     void search(int record_id);
     void inorder();
 
 private:
+    //these are the helper functions to the main fucntions.
+    //insert just inserts each Row of the Excel sheet into the tree with all the slave information
     void insertHelper(Node* node, int record_id, Packet packet);
 
+    //splitNode handles overflow when the number of keys has exceeded N
     void splitNode(Node* parent, Node* node, Packet packet);
 
+    //search just sorts through the tree and finds the desired ID
     Node* searchHelper(Node* node, int record_id);
+    //inorder traversal does a traversal through each node and prints out the ID (We have made a comment on it as to
+    //why we are not printing anything, so read that)
     void inorderTraversal(Node* node);
 };
 
+//checks if the desired node has any children
 bool Node::isLeaf() const{
     return children.empty();
 }
@@ -45,12 +55,16 @@ Node::Node(){
     parent = nullptr;
 }
 
+//insert an ID and packet into tree
 void BTree::insert(int record_id, Packet packet){
+    //if there is no node, make a new one and insert an ID and packet
     if (root == nullptr){
         root = new Node();
         root->id_and_key.push_back(make_pair(record_id, packet));
     }
+    //otherwise call insert helper
     else{
+        //note that if the # of entries has exceeded the max number of keys splitNode is called to handle splitting.
         if (root->id_and_key.size() > MAX_KEYS){
             Node* new_root = new Node();
             new_root->children.push_back(root);
@@ -61,6 +75,7 @@ void BTree::insert(int record_id, Packet packet){
     }
 }
 
+//calls search helper and prints if the ID is found, prints not found otherwise
 void BTree::search(int record_id){
     Node* node = searchHelper(root, record_id);
 
@@ -80,9 +95,12 @@ BTree::BTree() {
     root = nullptr;
 }
 
+//called from the main method insert()
 void BTree::insertHelper(Node* node, int record_id, Packet packet){
+    //if the node is a leaf (has no children), then add a key (ID and packet)
     if (node->isLeaf()){
         node->id_and_key.push_back(make_pair(record_id, packet));
+        //after inserting the key, sort the keys in the node by the ID of the keys.
         sort(node->id_and_key.begin(), node->id_and_key.end(), [](const auto& a, const auto& b) {
             return a.first < b.first;
         });
@@ -165,6 +183,9 @@ Node *BTree::searchHelper(Node *node, int record_id){
     }
 }
 
+//for this program we are not ouputting the inorder traversal in order to keep the console not too crowded.
+//the inorder traversal would print 9600 IDs which would make our menu driven program look bad. But here is the
+//implementation
 void BTree::inorderTraversal(Node *node){
     if (node != nullptr){
         if (!node->isLeaf()){
