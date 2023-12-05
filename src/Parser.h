@@ -17,6 +17,7 @@ class Parser{
     static RedBlackTree generateRBTree();
 };
 
+// reads file and generates a B tree with all records. Note how packets are used to encapsulate variables
 BTree Parser::generateBTree(){
     BTree bt;
     ifstream data_in("input/slavery_ids.csv");
@@ -58,6 +59,8 @@ BTree Parser::generateBTree(){
 	}
     return bt;
 }
+
+// reads file and generates a red black tree with all records. Note how packets are used to encapsulate variables
 
 RedBlackTree Parser::generateRBTree(){
     RedBlackTree rbt;

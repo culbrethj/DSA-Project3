@@ -2,6 +2,8 @@
 #include <string>
 using namespace std;
 
+// A "packet" encapsulates all column values so that each row can be simply represented as an index and a packet.
+// This significantly cleans up all function signatures for the tree classes.
 struct Packet{
 	string buyer_county; //2
 	string buyer_name; //3

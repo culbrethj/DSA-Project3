@@ -240,6 +240,7 @@ void RedBlackTree::statesInorderTraversal(RBNode* node, unordered_map<string, in
     }
 }
 
+// Helper function to perform an inorder traversal of the tree and average the age field
 void RedBlackTree::agesInorderTraversal(RBNode* node, long long int& total, int& count){
     if (node != NIL) {
         agesInorderTraversal(node->left, total, count);
@@ -268,10 +269,12 @@ void RedBlackTree::search(int record_id) {
         cout << "Record with ID " << record_id << " not found." << endl;
     }
 }
+
 // Public function to perform an inorder traversal of the tree
 void RedBlackTree::inorder() {
     inorderTraversal(root);
 }
+
 // Public function to count the occurrences of each state in the tree
 unordered_map<string, int> RedBlackTree::statesInorder(){
     unordered_map<string, int> mp;
@@ -279,6 +282,7 @@ unordered_map<string, int> RedBlackTree::statesInorder(){
     return mp;
 }
 
+// Public function to average the victim ages in the tree
 double RedBlackTree::agesInorder(){
     long long int sum = 0;
     int count = 0;
