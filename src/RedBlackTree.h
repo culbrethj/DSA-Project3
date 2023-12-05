@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <map>
+#include <unordered_map>
 #include "Packet.h"
 using namespace std;
 
@@ -39,7 +39,7 @@ private:
 
     RBNode* searchRecord(int record_id);
     void inorderTraversal(RBNode* node);
-    void statesInorderTraversal(RBNode* node, map<string, int>& mp);
+    void statesInorderTraversal(RBNode* node, unordered_map<string, int>& mp);
 
 public:
     RedBlackTree();
@@ -48,7 +48,7 @@ public:
     void insert(int record_id, Packet packet);
     void search(int record_id);
     void inorder();
-    map<string, int> statesInorder();
+    unordered_map<string, int> statesInorder();
 };
 
 RedBlackTree::RedBlackTree() {
@@ -207,12 +207,12 @@ void RedBlackTree::inorderTraversal(RBNode* node) {
     }
 }
 
-void RedBlackTree::statesInorderTraversal(RBNode* node, map<string, int>& mp){
+void RedBlackTree::statesInorderTraversal(RBNode* node, unordered_map<string, int>& mp){
     if (node != NIL) {
-        inorderTraversal(node->left, mp);
+        statesInorderTraversal(node->left, mp);
         if (!mp[node->data.buyer_state]) mp[node->data.buyer_state] = 1;
         else mp[node->data.buyer_state]++;
-        inorderTraversal(node->right, mp);
+        statesInorderTraversal(node->right, mp);
     }
 }
 
@@ -238,8 +238,8 @@ void RedBlackTree::inorder() {
     inorderTraversal(root);
 }
 
-map<string, int> RedBlackTree::statesInorder(){
-    map<string, int> mp;
+unordered_map<string, int> RedBlackTree::statesInorder(){
+    unordered_map<string, int> mp;
     statesInorderTraversal(root, mp);
     return mp;
 }

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <chrono>
+#include <unordered_map>
 #include "Parser.h"
 using namespace std;
 
@@ -10,6 +11,7 @@ class ExecutionTimer{
     static void insert();
     static void search(int n);
     static void traverse();
+    static void top5Locations();
     // static void temp(){
 
     //     auto start_time5 = chrono::high_resolution_clock::now();
@@ -86,4 +88,14 @@ void ExecutionTimer::traverse(){
 	auto end_time2 = chrono::high_resolution_clock::now();
 	auto duration2 = chrono::duration_cast<chrono::microseconds>(end_time2 - start_time2);
     cout << "Time to traverse Red Black Tree: " << duration2.count() << " microseconds" << endl;
+}
+
+void ExecutionTimer::top5Locations(){
+    RedBlackTree rbt = Parser::generateRBTree();
+    unordered_map<string, int> mp = rbt.statesInorder();
+    vector<pair<string, int>> top5;
+    for(auto state : mp){
+        top5.push_back(make_pair(state.first, state.second));
+    }
+    for(auto p : top5) cout << p.first << " " << p.second << endl;
 }

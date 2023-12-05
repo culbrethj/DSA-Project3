@@ -29,9 +29,10 @@ int main(){
 					cin >> inner_selection;
 					switch(inner_selection){
 						case 1:
-							
+							ExecutionTimer::top5Locations();
 							break;
 						case 2:
+
 							break;
 						default:
 							break;
